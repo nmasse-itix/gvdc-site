@@ -1,0 +1,126 @@
+# Configuration de Pages CMS (https://app.pagescms.org)
+# Définit les formulaires permettant de modifier le site sans toucher au code.
+
+content:
+  - name: saison
+    label: Saison et tarifs
+    type: file
+    path: src/_data/saison.yml
+    format: yaml
+    fields:
+      - name: annee
+        label: Saison en cours
+        type: string
+        required: true
+        description: "Format : 2026-2027"
+        pattern:
+          regex: "^\\d{4}-\\d{4}$"
+          message: "Indiquez la saison au format 2026-2027"
+      - name: licence
+        label: Licence FFEPGV (obligatoire)
+        type: object
+        fields:
+          - name: prix
+            label: Prix de la licence (€)
+            type: string
+            required: true
+            description: "Exemple : 29,80"
+            pattern:
+              regex: "^\\d+([,.]\\d{1,2})?$"
+              message: "Indiquez un montant comme 29,80 ou 100 (sans le symbole €)"
+          - name: avantages
+            label: Ce qui est inclus
+            type: string
+            list: true
+      - name: cotisations
+        label: Cotisations
+        type: object
+        description: "Une carte par formule, affichée dans l'ordre de la liste. L'icône (1, 2, 3…) suit cet ordre."
+        list:
+          collapsible:
+            collapsed: true
+            summary: "{fields.titre} : {fields.prix} €"
+        fields:
+          - name: titre
+            label: Intitulé
+            type: string
+            required: true
+            description: "Exemple : 1 cours / semaine"
+          - name: prix
+            label: Cotisation annuelle (€)
+            type: string
+            required: true
+            description: "Exemple : 100,00 (la licence est ajoutée automatiquement sous le prix)"
+            pattern:
+              regex: "^\\d+([,.]\\d{1,2})?$"
+              message: "Indiquez un montant comme 100,00 ou 100 (sans le symbole €)"
+          - name: populaire
+            label: Mettre en avant (badge « Le plus populaire »)
+            type: boolean
+            description: "À cocher sur une seule formule"
+          - name: avantages
+            label: Points forts
+            type: string
+            list: true
+
+  - name: contacts
+    label: Contacts
+    type: file
+    path: src/_data/contacts.yml
+    format: yaml
+    fields:
+      - name: bureau
+        label: Membres du bureau
+        type: object
+        list:
+          collapsible:
+            collapsed: true
+            summary: "{fields.role} : {fields.prenom} {fields.nom}"
+        fields:
+          - name: role
+            label: Fonction
+            type: string
+            required: true
+            description: "Exemple : Présidente, Trésorier, Secrétaire…"
+          - name: prenom
+            label: Prénom
+            type: string
+            required: true
+          - name: nom
+            label: Nom
+            type: string
+            required: true
+            description: "Affiché automatiquement en majuscules"
+          - name: telephone
+            label: Téléphone
+            type: string
+            description: "Format : 06 12 34 56 78 (laisser vide pour ne pas afficher de numéro)"
+            pattern:
+              regex: "^(0\\d( \\d{2}){4})?$"
+              message: "Indiquez le numéro au format 06 12 34 56 78"
+      - name: adresse
+        label: Adresse postale
+        type: object
+        fields:
+          - name: rue
+            label: Numéro et rue
+            type: string
+            required: true
+          - name: code_postal
+            label: Code postal
+            type: string
+            required: true
+            pattern:
+              regex: "^\\d{5}$"
+              message: "Le code postal comporte 5 chiffres"
+          - name: ville
+            label: Ville
+            type: string
+            required: true
+      - name: email
+        label: Adresse email
+        type: string
+        required: true
+        pattern:
+          regex: "^[^@\\s]+@[^@\\s]+\\.[^@\\s]+$"
+          message: "Adresse email invalide"

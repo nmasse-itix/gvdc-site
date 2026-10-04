@@ -326,8 +326,9 @@
 ════════════════════════════════════════════════ -->
 <section id="tarifs">
     <div class="container">
-        <h2 class="section-title text-center">Tarifs saison 2026-2027</h2>
+        <h2 class="section-title text-center">Tarifs saison {{ saison.annee }}</h2>
 
+        {%- set licence = saison.licence.prix | prix %}
         <div class="row g-4 justify-content-center">
 
             <!-- Licence -->
@@ -338,63 +339,44 @@
                     </div>
                     <h5 class="fw-bold mb-1">Licence</h5>
                     <p class="text-muted small mb-3">Obligatoire</p>
-                    <div class="price-amount">29<span class="fs-4">,80&nbsp;€</span></div>
+                    <div class="price-amount">{{ licence.euros }}<span class="fs-4">,{{ licence.centimes }}&nbsp;€</span></div>
                     <p class="text-muted small mb-3">par saison</p>
                     <hr>
                     <ul class="list-unstyled text-start small">
-                        <li class="mb-2"><i class="bi bi-check-circle-fill check-teal me-2"></i>Affiliation FFEPGV</li>
-                        <li class="mb-2"><i class="bi bi-check-circle-fill check-teal me-2"></i>Assurance incluse</li>
-                        <li class="mb-2"><i class="bi bi-check-circle-fill check-teal me-2"></i>Espace personnel FFEPGV</li>
-                        <li class="mb-2"><i class="bi bi-check-circle-fill check-teal me-2"></i>Reçu fiscal</li>
+                        {%- for avantage in saison.licence.avantages %}
+                        <li class="mb-2"><i class="bi bi-check-circle-fill check-teal me-2"></i>{{ avantage | nbsp }}</li>
+                        {%- endfor %}
                     </ul>
                 </div>
             </div>
-
-            <!-- 1 cours/semaine -->
+            {% for cotisation in saison.cotisations %}
+            {%- set montant = cotisation.prix | prix %}
+            {%- set couleur = "purple" if cotisation.populaire else "teal" %}
+            <!-- {{ cotisation.titre }} -->
             <div class="col-md-4 col-lg-3">
-                <div class="card pricing-card featured shadow-lg text-center p-4 h-100">
+                <div class="card pricing-card {{ "featured shadow-lg" if cotisation.populaire else "shadow" }} text-center p-4 h-100">
+                    {%- if cotisation.populaire %}
                     <span class="badge rounded-pill mb-3 px-3 py-2" style="background:var(--gvdc-purple);">
                         Le plus populaire
                     </span>
+                    {%- endif %}
                     <div class="mb-3">
-                        <i class="bi bi-1-circle-fill fs-1" style="color:var(--gvdc-purple);"></i>
+                        <i class="bi bi-{{ loop.index }}-circle-fill fs-1" style="color:var(--gvdc-{{ couleur }});"></i>
                     </div>
-                    <h5 class="fw-bold mb-1">1 cours / semaine</h5>
+                    <h5 class="fw-bold mb-1">{{ cotisation.titre | nbsp }}</h5>
                     <p class="text-muted small mb-3">Cotisation annuelle</p>
-                    <div class="price-amount">100<span class="fs-4">,00&nbsp;€</span></div>
+                    <div class="price-amount">{{ montant.euros }}<span class="fs-4">,{{ montant.centimes }}&nbsp;€</span></div>
                     <p class="text-muted small mb-3">par saison</p>
                     <hr>
                     <ul class="list-unstyled text-start small">
-                        <li class="mb-2"><i class="bi bi-check-circle-fill check-purple me-2"></i>Au choix&nbsp;: Lundi, Mercredi ou Vendredi</li>
-                        <li class="mb-2"><i class="bi bi-check-circle-fill check-purple me-2"></i>1 heure par séance</li>
-                        <li class="mb-2"><i class="bi bi-check-circle-fill check-purple me-2"></i>Cours multisports</li>
-                        <li class="mb-2"><i class="bi bi-check-circle-fill check-purple me-2"></i>Moniteur qualifié</li>
+                        {%- for avantage in cotisation.avantages %}
+                        <li class="mb-2"><i class="bi bi-check-circle-fill check-{{ couleur }} me-2"></i>{{ avantage | nbsp }}</li>
+                        {%- endfor %}
                     </ul>
-                    <p class="text-muted small mt-auto">+ 29,80&nbsp;€ de licence</p>
+                    <p class="text-muted small mt-auto">+ {{ licence.euros }},{{ licence.centimes }}&nbsp;€ de licence</p>
                 </div>
             </div>
-
-            <!-- 2 cours/semaine -->
-            <div class="col-md-4 col-lg-3">
-                <div class="card pricing-card shadow text-center p-4 h-100">
-                    <div class="mb-3">
-                        <i class="bi bi-2-circle-fill fs-1" style="color:var(--gvdc-teal);"></i>
-                    </div>
-                    <h5 class="fw-bold mb-1">2 cours / semaine</h5>
-                    <p class="text-muted small mb-3">Cotisation annuelle</p>
-                    <div class="price-amount">155<span class="fs-4">,00&nbsp;€</span></div>
-                    <p class="text-muted small mb-3">par saison</p>
-                    <hr>
-                    <ul class="list-unstyled text-start small">
-                        <li class="mb-2"><i class="bi bi-check-circle-fill check-teal me-2"></i>Parmi les 3 créneaux</li>
-                        <li class="mb-2"><i class="bi bi-check-circle-fill check-teal me-2"></i>1 heure par séance</li>
-                        <li class="mb-2"><i class="bi bi-check-circle-fill check-teal me-2"></i>Progression optimisée</li>
-                        <li class="mb-2"><i class="bi bi-check-circle-fill check-teal me-2"></i>Moniteur qualifié</li>
-                    </ul>
-                    <p class="text-muted small mt-auto">+ 29,80&nbsp;€ de licence</p>
-                </div>
-            </div>
-
+            {% endfor %}
         </div>
 
         <p class="text-center text-muted mt-4">
@@ -456,53 +438,25 @@
         <h2 class="section-title text-center">Nous contacter</h2>
 
         <!-- Bureau -->
-        <div class="row g-4 mb-4">
-
+        <div class="row g-4 mb-4 justify-content-center">
+            {% for membre in contacts.bureau %}
             <div class="col-md-4">
                 <div class="card contact-card shadow-sm p-4 h-100">
                     <div class="d-flex align-items-center gap-3 mb-3">
                         <div class="icon-circle"><i class="bi bi-person-badge-fill"></i></div>
                         <div>
-                            <div class="text-muted small">Présidente</div>
-                            <div class="fw-bold">Monique LORIEUL</div>
+                            <div class="text-muted small">{{ membre.role }}</div>
+                            <div class="fw-bold">{{ membre.prenom }} {{ membre.nom | upper }}</div>
                         </div>
                     </div>
-                    <a href="tel:+33620174754" class="btn btn-outline-secondary btn-sm">
-                        <i class="bi bi-telephone me-2"></i>06 20 17 47 54
+                    {%- if membre.telephone %}
+                    <a href="tel:{{ membre.telephone | tel }}" class="btn btn-outline-secondary btn-sm">
+                        <i class="bi bi-telephone me-2"></i>{{ membre.telephone }}
                     </a>
+                    {%- endif %}
                 </div>
             </div>
-
-            <div class="col-md-4">
-                <div class="card contact-card shadow-sm p-4 h-100">
-                    <div class="d-flex align-items-center gap-3 mb-3">
-                        <div class="icon-circle"><i class="bi bi-person-badge-fill"></i></div>
-                        <div>
-                            <div class="text-muted small">Trésorière</div>
-                            <div class="fw-bold">Patricia ODEN</div>
-                        </div>
-                    </div>
-                    <a href="tel:+33684440307" class="btn btn-outline-secondary btn-sm">
-                        <i class="bi bi-telephone me-2"></i>06 84 44 03 07
-                    </a>
-                </div>
-            </div>
-
-            <div class="col-md-4">
-                <div class="card contact-card shadow-sm p-4 h-100">
-                    <div class="d-flex align-items-center gap-3 mb-3">
-                        <div class="icon-circle"><i class="bi bi-person-badge-fill"></i></div>
-                        <div>
-                            <div class="text-muted small">Secrétaire</div>
-                            <div class="fw-bold">Khalissa SELMANI</div>
-                        </div>
-                    </div>
-                    <a href="tel:+33677434231" class="btn btn-outline-secondary btn-sm">
-                        <i class="bi bi-telephone me-2"></i>06 77 43 42 31
-                    </a>
-                </div>
-            </div>
-
+            {% endfor %}
         </div>
 
         <!-- Adresse & Email -->
@@ -515,8 +469,8 @@
                         <div>
                             <div class="fw-bold mb-1">Adresse postale</div>
                             <p class="text-muted mb-0">
-                                2 Place du onze novembre 1918<br>
-                                27190 Conches-en-Ouche
+                                {{ contacts.adresse.rue }}<br>
+                                {{ contacts.adresse.code_postal }} {{ contacts.adresse.ville }}
                             </p>
                         </div>
                     </div>
@@ -529,9 +483,9 @@
                         <div class="icon-circle"><i class="bi bi-envelope-fill"></i></div>
                         <div>
                             <div class="fw-bold mb-1">Email</div>
-                            <a href="mailto:gymnastiquevolontaireconches@gmail.com"
+                            <a href="mailto:{{ contacts.email }}"
                                style="color:var(--gvdc-purple); word-break:break-all;">
-                                gymnastiquevolontaireconches@gmail.com
+                                {{ contacts.email }}
                             </a>
                         </div>
                     </div>

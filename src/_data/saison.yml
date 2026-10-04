@@ -1,0 +1,26 @@
+# Saison en cours et tarifs — modifiable via Pages CMS (https://app.pagescms.org)
+annee: "2026-2027"
+licence:
+  prix: "29,80"
+  avantages:
+    - Affiliation FFEPGV
+    - Assurance incluse
+    - Espace personnel FFEPGV
+    - Reçu fiscal
+cotisations:
+  - titre: 1 cours / semaine
+    prix: "100,00"
+    populaire: true
+    avantages:
+      - "Au choix : Lundi, Mercredi ou Vendredi"
+      - 1 heure par séance
+      - Cours multisports
+      - Moniteur qualifié
+  - titre: 2 cours / semaine
+    prix: "155,00"
+    populaire: false
+    avantages:
+      - Parmi les 3 créneaux
+      - 1 heure par séance
+      - Progression optimisée
+      - Moniteur qualifié

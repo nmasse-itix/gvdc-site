@@ -1,0 +1,19 @@
+# Bureau et coordonnées — modifiable via Pages CMS (https://app.pagescms.org)
+bureau:
+  - role: Présidente
+    prenom: Monique
+    nom: LORIEUL
+    telephone: 06 20 17 47 54
+  - role: Trésorière
+    prenom: Patricia
+    nom: ODEN
+    telephone: 06 84 44 03 07
+  - role: Secrétaire
+    prenom: Khalissa
+    nom: SELMANI
+    telephone: 06 77 43 42 31
+adresse:
+  rue: 2 Place du onze novembre 1918
+  code_postal: "27190"
+  ville: Conches-en-Ouche
+email: gymnastiquevolontaireconches@gmail.com
