@@ -1,4 +1,3 @@
-# Bureau et coordonnées — modifiable via Pages CMS (https://app.pagescms.org)
 bureau:
   - role: Présidente
     prenom: Monique
@@ -15,5 +14,5 @@ bureau:
 adresse:
   rue: 2 Place du onze novembre 1918
   code_postal: "27190"
-  ville: Conches-en-Ouche
+  ville: Conches
 email: gymnastiquevolontaireconches@gmail.com
